@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!--배경-->
+<div id="img">
+    <link rel="stylesheet" href="{%static 'style.css'%}?a">
+<div id="back">
+    <!--로고-->
+    <div id="logo">
+        <img src="https://postfiles.pstatic.net/MjAyMTA1MjRfMTIy/MDAxNjIxODQxNzAyNzEz.sw9sfN3XrDFQHtyj3MUqDTx9qkazwoMCM-KuASIBPxgg.Aau2GOTPkBXbKE8df2fVzuEbu29utUVHgFctyzf97e4g.PNG.mmy0509/logo_transparent.png?type=w773"
+        style="margin:0 auto; width:300px;">
+        <link rel="stylesheet" href="{%static 'style.css'%}?a">
+        </div>
+        <!-- 메인페이지 이동 링크 -->
+        <div id="main_recipe">
+            <a href="{% url 'main:index' %}">메인 레시피<br></a>
+            <link rel="stylesheet" href="{%static 'style.css'%}?a">
+        </div>
+
+        <!-- 공유페이지 이동 링크 -->
+        <div id="share_recipe">
+            <a href="{% url 'share:index' %}">공유 레시피<br></a>
+            <link rel="stylesheet" href="{%static 'style.css'%}?a">
+        </div>
+
+        <!-- 추천페이지 이동 링크 -->
+        <div id="recommened">
+            <a href="{% url 'best:index' %}">추천 레시피<br></a>
+            <link rel="stylesheet" href="{%static 'style.css'%}?a">
+        </div>
+    </div>
+</div>
+ <div id="information">
+    <div style="color:#828282; margin:0 auto; float:right; marign-right:5rem;padding:4px;">17422004 정지영</div>
+    <div style="color:#828282;margin:0 auto; float:right;padding:4px;">17422042 권재순</div>
+ </div>
+
+
+{% endblock %}

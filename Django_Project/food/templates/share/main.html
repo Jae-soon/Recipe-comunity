@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{%load static %}
+{% block content %}
+<!--로고-->
+<div id="inback">
+    <div id="main-in">
+        <h2 style="font-size:35pt;"><b>나만의 레시피를 만들어 뽑낼 수 있는 게시판입니다.</b></h2>
+    </div>
+<div id="inlogo">
+        <img src="https://postfiles.pstatic.net/MjAyMTA1MjRfMTIy/MDAxNjIxODQxNzAyNzEz.sw9sfN3XrDFQHtyj3MUqDTx9qkazwoMCM-KuASIBPxgg.Aau2GOTPkBXbKE8df2fVzuEbu29utUVHgFctyzf97e4g.PNG.mmy0509/logo_transparent.png?type=w773"
+        style="margin:0 auto; width:300px;">
+        <link rel="stylesheet" href="{%static 'style.css'%}?a">
+</div>
+    <div id="centerfont">
+        <img src="https://postfiles.pstatic.net/MjAyMTA1MzFfMTcx/MDAxNjIyMzkyODE5NjU2.cMAuWeAfugBuZKZuH7G1DAQp9IO-gu6gHBxW1FbYb7Ug.IEcW3ElwDoA20j-s_Arsv7sGNRMn7-SEkExpvSZ2nqwg.PNG.mmy0509/share.PNG?type=w773">
+    </div>
+    <!-- 한식 이동 -->
+    <div id="s-korean">
+        <a href="{% url 'share:korean' %}">✔한식</a><br>
+        <a href="{% url 'share:korean' %}">우리나라 전통의 한식의 조리법을  공유하는 게시판 입니다.</a>
+    </div>
+
+    <!-- 중식 이동 -->
+    <div id="chinese">
+        <a href="{% url 'share:chinese' %}"title="중국 음식을 위한 레시피 게시판 입니다.">✔중식</a><br>
+        <a href="{% url 'share:chinese' %}">중국의 조리법을 공유하는 게시판 입니다.</a>
+    </div>
+
+    <!-- 양식 이동 -->
+    <div id="western">
+        <a href="{% url 'share:western' %}"title="서양 음식을 위한 레시피 게시판 입니다">✔양식</a><br>
+        <a href="{% url 'share:western' %}">서양의 음식 즉 양식의 조리법을 공유하는 게시판 입니다.  </a>
+    </div>
+
+    <!-- 일식 이동 -->
+    <div id="japanese">
+        <a href="{% url 'share:japanese' %}"title="일본 음식을 위한 레시피 게시판 입니다">✔일식</a><br>
+        <a href="{% url 'share:japanese' %}"> 일본의 음식 조리법을 공유하는 게시판 입니다.</a>
+    </div>
+    <div id="share_button">
+        <a href = "{% url 'share:recipe_create' %}" class = "btn btn-primary">레시피 등록하기</a>
+    </div>
+</div>
+{% endblock %}

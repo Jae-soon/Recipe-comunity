@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class = "container">
+    <h5 class = "my-3 border-bottom pb-2">레시피 등록</h5>
+    <form method = "post" class = "post-form my-3", enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                {% for field in form %}
+                    {% if field.errors %}
+                    <strong>{{ field.label }}</strong>
+                    {{ field.errors }}
+                    {% endif %}
+                {% endfor %}
+                </div>
+            {% endif %}
+            <!-- 오류표시 End -->
+            <div class="form-group">
+                <label for="subject">레시피 이름</label>
+                <input type="text" class="form-control" name="subject" id="subject" value="{{ form.subject.value|default_if_none:'' }}">
+            </div>
+            <div class="form-group">
+                <label>종류</label>
+                {{ form.menu }}
+            </div>
+            <div class="form-group">
+                <label for="material">재료</label>
+                    <textarea class="form-control" name="material" id="material" rows="5">{{ form.content.value|default_if_none:'' }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="how_Make">만드는 법</label>
+                    <textarea class="form-control" name="how_Make" id="how_Make" rows="10">{{ form.content.value|default_if_none:'' }}</textarea>
+            </div>
+            <div class="form-group">
+                <input type = "file" name="imgs" multiple>
+            </div>
+            <button type="submit" class="btn btn-primary">저장하기</button>
+        </form>
+    </div>
+{% endblock %}

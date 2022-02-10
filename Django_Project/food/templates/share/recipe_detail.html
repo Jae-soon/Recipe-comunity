@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load share_filter %}
+{% block content %}
+<div class="container my-3">
+    {% if messages %}
+    <div class = "alert alert-danger my-3" role = "alert">
+        {% for message in messages %}
+            <strong>{{ message.tags }}</strong>
+            <ul><li>{{ message.message }}</li></ul>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <h2 class="border-bottom py-2">공유 레시피</h2>
+    <div class="row my-3">
+        <div class="col-1"> <!-- 추천영역 -->
+            <div class="bg-light text-center p-3 border font-weight-bolder mb-1">{{ recipe.voter.count }}</div>
+            <a href="#" data-uri="{% url 'share:vote_recipe' recipe.id  %}"
+               class="recommend btn btn-sm btn-secondary btn-block my-1">추천</a>
+        </div><!-- 추천영역 end -->
+        {% for photo in recipe.photo_set.all %}
+            <img style="margin:0 auto;" src="{{photo.image.url}}"><br>
+        {% endfor %}
+        <div class = "col-11"><!-- 질문 영영 -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-text">{{ recipe.subject|mark }}</div>
+                    <div class="d-flex justify-content-end">
+                        {% if recipe.modify_date %}
+                        <div class = "badge badge-light p-2 text-left mx-3">
+                            <div class = "mb-2">수정 일자</div>
+                            <div>{{ recipe.modify_date }}</div>
+                        </div>
+                        {% endif %}
+                        <div class="badge badge-light p-2 text-left">
+                            <div class = "mb-2">{{ recipe.author.username }}</div>
+                            <div>{{ recipe.create_date }}</div>
+                        </div>
+                    </div>
+                    {% if request.user == recipe.author %}
+                    <div class = "my-3">
+                        <a href = "{% url 'share:recipe_modify' recipe.id %}" class = "btn btn-sm btn-outline-secondary">수정</a>
+                        <a href = "#" class = "delete btn btn-sm btn-outline-secondary" data-uri = "{% url 'share:recipe_delete' recipe.id %}">삭제</a>
+                    </div>
+                    {% endif %}
+                    <!-- 질문 댓글 Start -->
+                    {% if recipe.comment_set.count > 0 %}
+                    <div class="mt-3">
+                    {% for comment in recipe.comment_set.all %}
+                        <a name = "comment_{{ comment.id }}"></a>
+                        <div class="comment py-2 text-muted">
+                            <span style="white-space: pre-line;">{{ comment.content }}</span>
+                            <span>
+                                - {{ comment.author }}, {{ comment.create_date }}
+                                {% if comment.modify_date %}
+                                (수정:{{ comment.modify_date }})
+                                {% endif %}
+                            </span>
+                            {% if request.user == comment.author %}
+                            <a href="{% url 'share:comment_modify_recipe' comment.id  %}" class="small">수정</a>
+                            <a href="#" class="small delete" data-uri="{% url 'share:comment_delete_recipe' comment.id  %}">삭제</a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    </div>
+                    {% endif %}
+                    <div>
+                        <a href="{% url 'share:comment_create_recipe' recipe.id  %}"
+                           class="small"><small>댓글 추가 ..</small></a>
+                    </div>
+                </div>
+            </div>
+            <div class="card my-3">
+                <div class="card-body">
+                    <div class="card-text" style="white-space: pre-line;">종류 : {{ recipe.menu }}</div>
+                </div>
+            </div>
+            <div class="card my-3">
+                <div class="card-body">
+                    <div class="card-text" style="white-space: nowrap;">주재료 : {{ recipe.material|mark }}</div>
+                </div>
+            </div>
+            <div class="card my-3">
+                <div class="card-body">
+                    <div class="card-text" style="white-space: nowrap;">만드는 법 : {{ recipe.how_Make|mark }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h5 class="border-bottom my-3 py-2">{{ recipe.answer_set.count }}개의 답변이 있습니다.</h5>
+    {% for answer in recipe.answer_set.all %}
+    <a name = "answer_{{ answer.id }}"></a>
+    <div class="row my-3">
+        <div class="col-1">  <!-- 추천영역 -->
+            <div class="bg-light text-center p-3 border font-weight-bolder mb-1">{{ answer.voter.count }}</div>
+            <a href="#" data-uri="{% url 'share:vote_answer' answer.id  %}"
+                class="recommend btn btn-sm btn-secondary btn-block my-1">추천</a>
+        </div>
+        <div class="col-11">  <!-- 답변영역 -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-text" style="white-space: pre-line;">{{ answer.content }}</div>
+                    <div class="d-flex justify-content-end">
+                        {% if recipe.modify_date %}
+                        <div class = "badge badge-light p-2 text-left mx-3">
+                            <div class = "mb-2">수정 일자</div>
+                            <div>{{ answer.modify_date }}</div>
+                        </div>
+                        {% endif %}
+                        <div class="badge badge-light p-2 text-left">
+                            <div class = "mb-2">{{ recipe.author.username }}</div>
+                            <div>{{ answer.create_date }}</div>
+                            {% if request.user == answer.author %}
+                            <div class = "my-3">
+                                <a href = "{% url 'share:answer_modify' answer.id %}" class = "btn btn-sm btn-outline-secondary">수정</a>
+                                <a href = "#" class = "delete btn btn-sm btn-outline-secondary" data-uri = "{% url 'share:answer_delete' answer.id %}">삭제</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if answer.comment_set.count > 0 %}
+                        <div class="mt-3">
+                        {% for comment in answer.comment_set.all %}
+                            <a name = "comment_{{ comment.id }}"></a>
+                            <div class="comment py-2 text-muted">
+                                <span style="white-space: pre-line;">{{ comment.content|mark }}</span>
+                                <span>
+                                    - {{ comment.author }}, {{ comment.create_date }}
+                                    {% if comment.modify_date %}
+                                    (수정:{{ comment.modify_date }})
+                                    {% endif %}
+                                </span>
+                                {% if request.user == comment.author %}
+                                <a href="{% url 'share:comment_modify_answer' comment.id  %}" class="small">수정</a>,
+                                <a href="#" class="small delete"
+                                   data-uri="{% url 'share:comment_delete_answer' comment.id  %}">삭제</a>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        </div>
+                        {% endif %}
+                        <div>
+                            <a href="{% url 'share:comment_create_answer' answer.id  %}"
+                               class="small"><small>댓글 추가 ..</small></a>
+                        </div>
+                        <!-- 질문 댓글 End -->
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <form action="{% url 'share:answer_create' recipe.id %}" method="post" class="my-3">
+        {% csrf_token %}
+<!-- 오류표시 Start-->
+        {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+            {% for field in form %}
+                {% if field.errors %}
+                <strong>{{ field.label }}</strong>
+                {{ field.errors }}
+                {% endif %}
+            {% endfor %}
+            </div>
+        {% endif %}
+        <!-- 오류표시 End -->
+        <div class="form-group">
+            <textarea name="content" id="content" {% if not user.is_authenticated %}disabled{% endif %} class="form-control" rows="10"></textarea>
+        </div>
+        <input type="submit" value="답변등록" class="btn btn-primary">
+    </form>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script type = 'text/javascript'>
+    $(document).ready(function(){
+        $(".delete").on('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = $(this).data('uri');
+            }
+        });
+        $(".recommend").on('click', function() {
+            if(confirm("정말로 추천하시겠습니까?")) {
+                location.href = $(this).data('uri');
+            }
+        });
+    });
+</script>
+{% endblock %}
